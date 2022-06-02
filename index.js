@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs')
+const youtubedl = require('youtube-dl')
 
 const app = express();
 app.use(cors());
@@ -14,6 +16,29 @@ app.get('/', (req, res) => {
 
   res.send('Hello World!<br>Param1 = ' + param1);
 });
+
+app.get('/download',(req,res)=> {
+  const { video_id } = req.query;
+
+const video = youtubedl(`http://www.youtube.com/watch?v=${video_id}`,
+  // Optional arguments passed to youtube-dl.
+  ['--format=18'],
+  // Additional options can be given for calling `child_process.execFile()`.
+  { cwd: __dirname })
+
+// Will be called when the download starts.
+  let filename = new Date().getTime();
+video.on('info', function(info) {
+  console.log('Download started')
+  filename = infi._filename;
+  console.log('filename: ' + info._filename)
+  console.log('size: ' + info.size)
+})
+  video.on('e')
+video.pipe(fs.createWriteStream(`downs/${filename}`))
+res.send("Saved to local cache");
+});  
+vi
 
 let nexPersonId = 3;
 const people = [
